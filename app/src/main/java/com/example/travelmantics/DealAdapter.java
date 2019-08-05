@@ -106,12 +106,18 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         * current views and cashing scrolled views.
         * It needs to know WHERE it would bind and HOW..*/
         TextView tvTitle;
+        TextView tvDescription;
+        TextView tvPrice;
         public DealViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
         }
         public void bind(TravelDeal deal){
             tvTitle.setText(deal.getTitle());
+            tvDescription.setText(deal.getDescription());
+            tvPrice.setText(deal.getPrice());
         }
     }
 
