@@ -43,6 +43,10 @@ public class ListActivity extends AppCompatActivity {
                 Intent intent = new Intent(ListActivity.this, DealActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.logout_menu:
+                FirebaseUtils.logout(this);
+                FirebaseUtils.detachListener();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

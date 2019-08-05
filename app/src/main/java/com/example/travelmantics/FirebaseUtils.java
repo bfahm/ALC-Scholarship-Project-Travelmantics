@@ -1,9 +1,12 @@
 package com.example.travelmantics;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -68,6 +71,17 @@ public class FirebaseUtils {
                         .setAvailableProviders(providers)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    public static void logout(final Context context){
+        AuthUI.getInstance()
+                .signOut(context)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(context, "See you soon.", Toast.LENGTH_SHORT).show();
+                        FirebaseUtils.attachListener();
+                    }
+                });
     }
 
     public static void attachListener(){
