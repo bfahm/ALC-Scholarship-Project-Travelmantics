@@ -34,7 +34,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private ChildEventListener mChildEventListener;
 
     DealAdapter(){
-        FirebaseUtils.openFbReference("traveldeals");
+        //We will open the reference in the caller activity instead to be able to pass the activity context.
+        //FirebaseUtils.openFbReference("traveldeals");
         mFirebaseDatabase = FirebaseUtils.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtils.mDatabaseReference;
 

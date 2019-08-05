@@ -27,15 +27,6 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-        RecyclerView rvDeals = findViewById(R.id.rvDeals);
-        final DealAdapter adapter = new DealAdapter();
-        rvDeals.setAdapter(adapter);
-
-        LinearLayoutManager dealsLayoutManager =
-                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-
-        rvDeals.setLayoutManager(dealsLayoutManager);
     }
 
     @Override
@@ -55,5 +46,31 @@ public class ListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseUtils.detachListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //**********************MOVED FROM ON CREATE************************
+        //this is the line that calls the signing in logic
+        FirebaseUtils.openFbReference("traveldeals", this);
+
+        RecyclerView rvDeals = findViewById(R.id.rvDeals);
+        final DealAdapter adapter = new DealAdapter();
+        rvDeals.setAdapter(adapter);
+
+        LinearLayoutManager dealsLayoutManager =
+                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+
+        rvDeals.setLayoutManager(dealsLayoutManager);
+        //******************************************************************
+
+        FirebaseUtils.attachListener();
     }
 }

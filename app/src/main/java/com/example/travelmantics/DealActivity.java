@@ -32,7 +32,7 @@ public class DealActivity extends AppCompatActivity{
         setContentView(R.layout.activity_insert);
 
         //Initialize Firebase
-        FirebaseUtils.openFbReference("traveldeals");
+        //FirebaseUtils.openFbReference("traveldeals");
         mFirebaseDatabase = FirebaseUtils.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtils.mDatabaseReference;
 
