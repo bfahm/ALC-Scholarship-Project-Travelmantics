@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class DealActivity extends AppCompatActivity{
 
@@ -29,6 +31,7 @@ public class DealActivity extends AppCompatActivity{
     EditText txtTitle;
     EditText txtPrice;
     EditText txtDescription;
+    ImageView imageView;
 
     TravelDeal deal;
 
@@ -46,6 +49,7 @@ public class DealActivity extends AppCompatActivity{
         txtTitle = findViewById(R.id.txtTitle);
         txtPrice = findViewById(R.id.txtPrice);
         txtDescription = findViewById(R.id.txtDescription);
+        imageView = findViewById(R.id.image);
         Button btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +80,7 @@ public class DealActivity extends AppCompatActivity{
                 public void onSuccess(Uri uri) {
                     Uri downloadUrl = uri;
                     deal.setImageUrl(downloadUrl.toString());
+                    showImage(downloadUrl.toString());
                 }
             });
         }
@@ -85,6 +90,7 @@ public class DealActivity extends AppCompatActivity{
         txtTitle.setText(deal.getTitle());
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
+        showImage(deal.getImageUrl());
     }
 
     @Override
@@ -163,5 +169,13 @@ public class DealActivity extends AppCompatActivity{
 
     }
 
+    private void showImage(String url){
+        if(url != null && url.isEmpty()==false){
+            Picasso.get()
+                    .load(url)
+                    //.centerCrop()
+                    .into(imageView);
+        }
+    }
 
 }
