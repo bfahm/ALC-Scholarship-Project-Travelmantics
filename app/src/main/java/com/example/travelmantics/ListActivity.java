@@ -3,6 +3,8 @@ package com.example.travelmantics;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -27,42 +29,13 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        //Initialize Database
-        FirebaseUtils.openFbReference("traveldeals");
-        mFirebaseDatabase = FirebaseUtils.mFirebaseDatabase;
-        mDatabaseReference = FirebaseUtils.mDatabaseReference;
+        RecyclerView rvDeals = findViewById(R.id.rvDeals);
+        final DealAdapter adapter = new DealAdapter();
+        rvDeals.setAdapter(adapter);
 
-        mChildEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                TextView tv = findViewById(R.id.tvDeals);
-                /* From the snapshot taken from the database, get the Added child of type TravelDeal
-                   -- This line gives the effect of serializing the return object to an array
-                      of bytes and adding it to the class object deal. */
-                TravelDeal deal = dataSnapshot.getValue(TravelDeal.class);
-                tv.setText(tv.getText() + "\n" + deal.getTitle());
-            }
+        LinearLayoutManager dealsLayoutManager =
+                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        mDatabaseReference.addChildEventListener(mChildEventListener);
+        rvDeals.setLayoutManager(dealsLayoutManager);
     }
 }
