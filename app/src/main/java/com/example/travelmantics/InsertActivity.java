@@ -26,8 +26,9 @@ public class InsertActivity extends AppCompatActivity {
         setContentView(R.layout.activity_insert);
 
         //Initialize Firebase
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("traveldeals");
+        FirebaseUtils.openFbReference("traveldeals");
+        mFirebaseDatabase = FirebaseUtils.mFirebaseDatabase;
+        mDatabaseReference = FirebaseUtils.mDatabaseReference;
 
         //Initialize Components
         txtTitle = findViewById(R.id.txtTitle);
