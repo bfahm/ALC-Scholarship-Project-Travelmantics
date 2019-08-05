@@ -118,7 +118,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+
             itemView.setOnClickListener(this);
+
         }
         public void bind(TravelDeal deal){
             tvTitle.setText(deal.getTitle());
@@ -133,7 +135,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             TravelDeal deal = deals.get(position);
             Intent intent = new Intent(v.getContext(), DealActivity.class);
             intent.putExtra("Deal", deal);
-            v.getContext().startActivity(intent);
+
+            //TODO: There is a bug here that needs attention.
+            //Item should only be clickable if current user is an admin.
+            //if(FirebaseUtils.isAdmin){
+                v.getContext().startActivity(intent);
+            //}
+
         }
     }
 

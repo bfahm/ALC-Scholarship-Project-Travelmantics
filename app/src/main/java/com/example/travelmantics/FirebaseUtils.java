@@ -8,6 +8,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -16,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class FirebaseUtils {
     public static FirebaseDatabase mFirebaseDatabase;
@@ -23,6 +27,7 @@ public class FirebaseUtils {
 
     public static FirebaseAuth mFirebaseAuth;
     public static FirebaseAuth.AuthStateListener mAuthListener;
+    public static boolean isAdmin;
 
     private static FirebaseUtils firebaseUtil;
     public static ArrayList<TravelDeal> mDeals;
@@ -49,6 +54,9 @@ public class FirebaseUtils {
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if(firebaseAuth.getCurrentUser()==null){
                         FirebaseUtils.signIn();
+                    }else{
+                        String userId = firebaseAuth.getUid();
+                        checkAdmin(userId);
                     }
                     Toast.makeText(callerActivity.getBaseContext(), "Welcome Back!", Toast.LENGTH_SHORT).show();
                 }
@@ -56,6 +64,48 @@ public class FirebaseUtils {
         }
         mDeals = new ArrayList<>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
+    }
+
+    private static void checkAdmin(String userId) {
+        FirebaseUtils.isAdmin = false;
+        // Get a snapshot from the database of admin entries whose UID == UID of signed in user.
+        // In other words: if user was admin, we search and find a result (listener will trigger)
+        //                 else: listener wont.
+        DatabaseReference ref = mFirebaseDatabase.getReference()
+                .child("adminstrators")
+                .child(userId);
+
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                FirebaseUtils.isAdmin = true;
+                Toast.makeText(caller.getBaseContext(), "You are an admin.", Toast.LENGTH_SHORT).show();
+                caller.showMenu();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        ref.addChildEventListener(listener);
+
     }
 
     private static void signIn(){

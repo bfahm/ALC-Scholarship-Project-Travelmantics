@@ -33,7 +33,20 @@ public class ListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
+
+        //Handle showing non-relevant features to non-admins
+        MenuItem insert = menu.findItem(R.id.insert_menu);
+        if(FirebaseUtils.isAdmin){
+            insert.setVisible(true);
+        }else{
+            insert.setVisible(false);
+        }
+
         return true;
+    }
+
+    public void showMenu(){
+        invalidateOptionsMenu();
     }
 
     @Override
