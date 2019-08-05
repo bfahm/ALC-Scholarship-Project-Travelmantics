@@ -18,8 +18,8 @@ public class FirebaseUtils {
         if(firebaseUtil == null){
             firebaseUtil = new FirebaseUtils(); //Class wasn't initialized, initialize now.
             mFirebaseDatabase = FirebaseDatabase.getInstance(); //Only getInstance the first time.
-            mDeals = new ArrayList<>();
         }
+        mDeals = new ArrayList<>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
     }
 }

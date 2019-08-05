@@ -1,5 +1,6 @@
 package com.example.travelmantics;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -101,7 +103,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         return deals.size();
     }
 
-    public class DealViewHolder extends RecyclerView.ViewHolder{
+
+
+    public class DealViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         /*View holder is what manages what is currently appearing to the user, via showing
         * current views and cashing scrolled views.
         * It needs to know WHERE it would bind and HOW..*/
@@ -113,11 +117,22 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            itemView.setOnClickListener(this);
         }
         public void bind(TravelDeal deal){
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
             tvPrice.setText(deal.getPrice());
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Log.d(TAG, "onClick: "+ String.valueOf(position));
+            TravelDeal deal = deals.get(position);
+            Intent intent = new Intent(v.getContext(), DealActivity.class);
+            intent.putExtra("Deal", deal);
+            v.getContext().startActivity(intent);
         }
     }
 
