@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,6 +51,9 @@ public class DealActivity extends AppCompatActivity{
         txtPrice = findViewById(R.id.txtPrice);
         txtDescription = findViewById(R.id.txtDescription);
         imageView = findViewById(R.id.image);
+
+
+
         Button btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +65,13 @@ public class DealActivity extends AppCompatActivity{
                         "Insert Picture"), PICTURE_RESULT);
             }
         });
+
+
+        if(FirebaseUtils.isAdmin){
+            btnImage.setVisibility(View.VISIBLE);
+        }else {
+            btnImage.setVisibility(View.GONE);
+        }
 
         //Handling an EDIT request:
         deal = (TravelDeal) getIntent().getSerializableExtra("Deal");
